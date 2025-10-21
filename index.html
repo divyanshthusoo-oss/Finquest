@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -5,34 +6,57 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Finance Quest — Learn Budgeting & Savings</title>
   <style>
-    :root{--bg:#0f1724;--card:#0b1220;--accent:#3b82f6;--muted:#94a3b8;--success:#10b981;--danger:#ef4444;--glass:rgba(255,255,255,0.03)}
-    *{box-sizing:border-box;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial}
-    html,body{height:100%;margin:0;background:linear-gradient(180deg,#07102a 0%,#071422 100%);color:#e6eef8}
+    :root{
+      --bg-gradient: linear-gradient(180deg,#07102a 0%,#071422 100%);
+      --card:#0b1220;
+      --accent:#3b82f6;
+      --muted:#94a3b8;
+      --glass:rgba(255,255,255,0.03);
+      --border: rgba(255,255,255,0.06);
+      --card-border: rgba(255,255,255,0.03);
+      --text: #e6eef8;
+      --btn-text: #06202b;
+    }
+
+    /* Light theme overrides */
+    .light {
+      --bg-gradient: linear-gradient(180deg,#f7fafc 0%,#eef2ff 100%);
+      --card: #ffffff;
+      --accent: #2563eb;
+      --muted: #475569;
+      --glass: rgba(0,0,0,0.03);
+      --border: rgba(0,0,0,0.06);
+      --card-border: rgba(0,0,0,0.06);
+      --text: #0b1220;
+      --btn-text: #ffffff;
+    }
+
+    *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,Arial}
+    html,body{height:100%;margin:0;background:var(--bg-gradient);color:var(--text)}
     .container{max-width:1000px;margin:28px auto;padding:20px}
     header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
     header h1{font-size:20px;margin:0}
     .status{display:flex;gap:12px;align-items:center}
     .badge{background:var(--glass);padding:8px 12px;border-radius:10px;color:var(--muted);font-size:14px}
-    .progress{width:140px;height:10px;background:rgba(255,255,255,0.06);border-radius:999px;overflow:hidden}
-    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7c3aed);width:40%}
+    .progress{width:140px;height:10px;background:var(--border);border-radius:999px;overflow:hidden}
+    .progress > i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),#7c3aed);width:0%}
     nav{display:flex;gap:8px;margin-bottom:18px}
-    nav button{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted);padding:8px 12px;border-radius:10px;cursor:pointer}
-    nav button.active{border-color:var(--accent);color:var(--accent);box-shadow:0 6px 18px rgba(59,130,246,0.12)}
+    nav button{background:transparent;border:1px solid var(--border);color:var(--muted);padding:8px 12px;border-radius:10px;cursor:pointer}
+    nav button.active{border-color:var(--accent);color:var(--accent)}
     .grid{display:grid;grid-template-columns:1fr 320px;gap:16px}
-    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);padding:16px;border-radius:12px;border:1px solid rgba(255,255,255,0.03)}
+    .card{padding:16px;border-radius:12px;border:1px solid var(--card-border);background-color:var(--card)}
     .lesson{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .lesson h3{margin:0;font-size:15px}
     .muted{color:var(--muted);font-size:13px}
-    .btn{background:var(--accent);color:#06202b;padding:8px 10px;border:none;border-radius:8px;cursor:pointer}
-    .ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 10px;border-radius:8px;color:var(--muted)}
+    .btn{background:var(--accent);color:var(--btn-text);padding:8px 10px;border:none;border-radius:8px;cursor:pointer}
+    .ghost{background:transparent;border:1px solid var(--border);padding:8px 10px;border-radius:8px;color:var(--muted);cursor:pointer}
     .small{padding:6px 8px;font-size:13px}
-    input[type="number"], input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit}
+    input[type="number"], input[type="text"]{width:100%;padding:10px;border-radius:8px;border:1px solid var(--border);background:transparent;color:inherit}
     .row{display:flex;gap:8px}
     ul.quests{list-style:none;padding:0;margin:0}
-    ul.quests li{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(255,255,255,0.01);margin-bottom:8px}
-    .leaderboard .user{display:flex;justify-content:space-between;padding:10px;border-radius:8px;background:rgba(255,255,255,0.01);margin-bottom:8px}
+    ul.quests li{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:8px;background:rgba(0,0,0,0.02);margin-bottom:8px}
     footer{margin-top:18px;color:var(--muted);font-size:13px;text-align:center}
     .big-stat{font-size:22px;font-weight:700}
+    #theme-toggle{margin-left:12px;padding:8px;border-radius:8px;border:1px solid var(--border);background:var(--glass);cursor:pointer;font-size:16px;color:var(--muted)}
     @media (max-width:880px){.grid{grid-template-columns:1fr;}.status{display:none}}
   </style>
 </head>
@@ -43,11 +67,17 @@
         <h1>Finance Quest</h1>
         <div class="muted">Learn budgeting, saving & investing with fun quests</div>
       </div>
-      <div class="status">
-        <div class="badge">Level <strong id="level">1</strong></div>
-        <div class="badge">XP <strong id="xp">0</strong></div>
-        <div class="progress" title="progress to next level"><i id="xpbar"></i></div>
-        <div class="badge">Coins <strong id="coins">0</strong></div>
+
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="status" aria-hidden="false">
+          <div class="badge">Level <strong id="level">1</strong></div>
+          <div class="badge">XP <strong id="xp">0</strong></div>
+          <div class="progress" title="progress to next level"><i id="xpbar"></i></div>
+          <div class="badge">Coins <strong id="coins">0</strong></div>
+        </div>
+
+        <!-- Theme toggle top-right -->
+        <button id="theme-toggle" class="ghost small" title="Toggle light / dark" aria-pressed="false">🌙</button>
       </div>
     </header>
 
@@ -62,9 +92,7 @@
       <main>
         <section id="tab-learn" class="card">
           <h2 style="margin-top:0">Lessons</h2>
-          <div id="lessons">
-            <!-- lesson cards inserted here -->
-          </div>
+          <div id="lessons"></div>
         </section>
 
         <section id="tab-sim" class="card" style="margin-top:12px;display:none">
@@ -86,13 +114,13 @@
               <input id="expense-amt" type="number" placeholder="800" />
               <button id="add-exp" class="ghost small">Add</button>
             </div>
-            <div id="expenses"></div>
+            <div id="expenses" aria-live="polite"></div>
           </div>
 
           <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
             <button id="calc" class="btn">Calculate</button>
             <button id="save-50" class="ghost small">Auto-save 50%</button>
-            <div id="sim-result" style="margin-left:8px" class="muted"></div>
+            <div id="sim-result" style="margin-left:8px" class="muted" aria-live="polite"></div>
           </div>
         </section>
 
@@ -101,7 +129,7 @@
           <ul class="quests" id="quest-list"></ul>
           <div style="margin-top:12px;display:flex;gap:8px;align-items:center">
             <button id="spin" class="btn">Spin Reward</button>
-            <div class="muted" id="spin-result"></div>
+            <div class="muted" id="spin-result" aria-live="polite"></div>
           </div>
         </section>
 
@@ -125,15 +153,12 @@
       </main>
 
       <aside>
-        <div class="card leaderboard">
-          <h3 style="margin-top:0">Leaderboard</h3>
-          <div id="leaderboard"></div>
-          <button id="reset" class="ghost small" style="margin-top:8px">Reset Progress</button>
-        </div>
-
-        <div class="card" style="margin-top:12px">
+        <div class="card" style="margin-top:0">
           <h3 style="margin-top:0">Tips</h3>
           <p class="muted" style="margin:0;font-size:14px">Start small: track expenses, build a 3-month emergency fund, and try micro-investing with spare change.</p>
+          <div style="margin-top:8px">
+            <button id="reset" class="ghost small">Reset Progress</button>
+          </div>
         </div>
       </aside>
     </div>
@@ -142,275 +167,317 @@
   </div>
 
   <script>
-    // Lightweight app state + persistence
-    const STORAGE_KEY = 'finance-quest-state-v1';
-    const defaultState = {
-      coins: 0, xp: 0, level: 1, lessons: {}, achievements: {}, quests: {}, users: [
-        {name:'You', coins:0, xp:0},
-        {name:'Ava', coins:420, xp:520},
-        {name:'Leo', coins:320, xp:410},
-        {name:'Maya', coins:250, xp:300}
-      ]
-    };
-    let state = loadState();
+    (function(){
+      const STORAGE_KEY = 'finance-quest-state-v1';
+      const THEME_KEY = 'finance-quest-theme';
+      const defaultState = {
+        coins: 0, xp: 0, level: 1, lessons: {}, achievements: {}, quests: {}, expenses: [], flags:{}
+      };
+      let state = loadState();
 
-    // UI references
-    const tabs = document.querySelectorAll('nav button');
-    const sections = {
-      learn: document.getElementById('tab-learn'),
-      sim: document.getElementById('tab-sim'),
-      quests: document.getElementById('tab-quests'),
-      profile: document.getElementById('tab-profile')
-    };
-    const lessonsEl = document.getElementById('lessons');
-    const coinsEl = document.getElementById('coins');
-    const xpEl = document.getElementById('xp');
-    const levelEl = document.getElementById('level');
-    const xpbar = document.getElementById('xpbar');
-    const leaderboardEl = document.getElementById('leaderboard');
-    const questList = document.getElementById('quest-list');
-    const achList = document.getElementById('ach-list');
-    const profileCoins = document.getElementById('profile-coins');
-    const profileXp = document.getElementById('profile-xp');
-    const spinResult = document.getElementById('spin-result');
-    const simResult = document.getElementById('sim-result');
+      // UI refs
+      const tabs = document.querySelectorAll('nav button');
+      const sections = {
+        learn: document.getElementById('tab-learn'),
+        sim: document.getElementById('tab-sim'),
+        quests: document.getElementById('tab-quests'),
+        profile: document.getElementById('tab-profile')
+      };
+      const lessonsEl = document.getElementById('lessons');
+      const coinsEl = document.getElementById('coins');
+      const xpEl = document.getElementById('xp');
+      const levelEl = document.getElementById('level');
+      const xpbar = document.getElementById('xpbar');
+      const questList = document.getElementById('quest-list');
+      const achList = document.getElementById('ach-list');
+      const profileCoins = document.getElementById('profile-coins');
+      const profileXp = document.getElementById('profile-xp');
+      const spinResult = document.getElementById('spin-result');
+      const simResult = document.getElementById('sim-result');
+      const themeToggle = document.getElementById('theme-toggle');
 
-    // Lessons data
-    const LESSONS = [
-      {id:'l1', title:'Budget Basics', desc:'Learn the 50/30/20 rule & track income vs expenses', xp:30, coins:10},
-      {id:'l2', title:'Savings Goals', desc:'Set SMART savings goals and emergency funds', xp:25, coins:12},
-      {id:'l3', title:'Intro to Investing', desc:'Risk & reward: simple index funds explained', xp:35, coins:18},
-      {id:'l4', title:'Compound Interest', desc:'See how savings grow over time', xp:40, coins:22}
-    ];
+      const LESSONS = [
+        {id:'l1', title:'Budget Basics', desc:'Learn the 50/30/20 rule & track income vs expenses', xp:30, coins:10},
+        {id:'l2', title:'Savings Goals', desc:'Set SMART savings goals and emergency funds', xp:25, coins:12},
+        {id:'l3', title:'Intro to Investing', desc:'Risk & reward: simple index funds explained', xp:35, coins:18},
+        {id:'l4', title:'Compound Interest', desc:'See how savings grow over time', xp:40, coins:22}
+      ];
 
-    // Quests
-    const QUESTS = [
-      {id:'q1', title:'Complete 1 Lesson', reward:{xp:20, coins:15}, check: s=>Object.keys(s.lessons).length>=1},
-      {id:'q2', title:'Save 10% this month (simulator)', reward:{xp:30, coins:20}, check: s=>s.flags && s.flags.saved10},
-      {id:'q3', title:'Spin Reward (one-time)', reward:{xp:10, coins:5}, check: s=>s.quests && s.quests['q3']}
-    ];
+      const QUESTS = [
+        {id:'q1', title:'Complete 1 Lesson', reward:{xp:20, coins:15}, check: s=>Object.keys(s.lessons||{}).length>=1},
+        {id:'q2', title:'Save 10% this month (simulator)', reward:{xp:30, coins:20}, check: s=>s.flags && s.flags.saved10},
+        {id:'q3', title:'Spin Reward (one-time)', reward:{xp:10, coins:5}, check: s=>s.quests && s.quests['q3']}
+      ];
 
-    // --- Persistence ---
-    function loadState(){
-      try{
-        const raw = localStorage.getItem(STORAGE_KEY);
-        if(raw) return JSON.parse(raw);
-      }catch(e){}
-      return JSON.parse(JSON.stringify(defaultState));
-    }
-    function saveState(){
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-      render();
-    }
-
-    // --- Leveling logic ---
-    function giveXP(amount){
-      state.xp += amount;
-      state.users[0].xp = state.xp;
-      while(state.xp >= xpToNext(state.level)){
-        state.xp -= xpToNext(state.level);
-        state.level++;
+      // Persistence
+      function loadState(){
+        try{
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if(raw) return JSON.parse(raw);
+        }catch(e){}
+        return JSON.parse(JSON.stringify(defaultState));
       }
-      saveState();
-    }
-    function xpToNext(level){ return 100 + (level-1)*50; }
+      function saveState(){
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        render();
+      }
 
-    function giveCoins(n){
-      state.coins += n;
-      state.users[0].coins = state.coins;
-      saveState();
-    }
+      // Theme
+      function applyTheme(theme){
+        const isLight = theme === 'light';
+        document.documentElement.classList.toggle('light', isLight);
+        if(themeToggle){
+          themeToggle.textContent = isLight ? '🌞' : '🌙';
+          themeToggle.setAttribute('aria-pressed', isLight ? 'true' : 'false');
+        }
+        localStorage.setItem(THEME_KEY, theme);
+      }
+      function toggleTheme(){
+        const current = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        applyTheme(current === 'light' ? 'dark' : 'light');
+      }
 
-    // --- UI wiring ---
-    function init(){
-      // tabs
-      tabs.forEach(btn=>{
-        btn.addEventListener('click', e=>{
-          tabs.forEach(b=>b.classList.remove('active'));
-          btn.classList.add('active');
-          Object.keys(sections).forEach(k=>sections[k].style.display='none');
-          const tab = btn.dataset.tab;
-          sections[tab].style.display = 'block';
-        });
-      });
-
-      // render lessons
-      renderLessons();
-      renderQuests();
-      renderLeaderboard();
-      render();
-
-      // budget simulator wiring
-      document.getElementById('add-exp').addEventListener('click', addExpense);
-      document.getElementById('calc').addEventListener('click', calculateBudget);
-      document.getElementById('save-50').addEventListener('click', ()=>{document.getElementById('expense-amt').value = Math.round((+document.getElementById('income').value || 0)*0.5);});
-      document.getElementById('spin').addEventListener('click', spinReward);
-      document.getElementById('reset').addEventListener('click', resetProgress);
-    }
-
-    function render(){
-      coinsEl.textContent = state.coins;
-      xpEl.textContent = state.xp;
-      levelEl.textContent = state.level;
-      const pct = Math.min(100, Math.round((state.xp / xpToNext(state.level))*100));
-      xpbar.style.width = pct + '%';
-      profileCoins.textContent = state.coins;
-      profileXp.textContent = `${state.xp} (Lvl ${state.level})`;
-      renderAchievements();
-      renderLeaderboard();
-      renderQuests(); // quests may toggle complete buttons
-    }
-
-    // Lessons UI and actions
-    function renderLessons(){
-      lessonsEl.innerHTML = '';
-      LESSONS.forEach(l=>{
-        const done = !!state.lessons[l.id];
-        const div = document.createElement('div');
-        div.className = 'lesson';
-        div.innerHTML = `
-          <div>
-            <h3>${l.title}</h3>
-            <div class="muted">${l.desc}</div>
-          </div>
-          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
-            <div class="muted" style="font-size:13px">+${l.xp} XP</div>
-            <button class="${done?'ghost':'btn'} small" data-id="${l.id}" ${done?'disabled':''}>${done?'Completed':'Start'}</button>
-          </div>
-        `;
-        lessonsEl.appendChild(div);
-      });
-
-      lessonsEl.querySelectorAll('button').forEach(b=>{
-        b.addEventListener('click', ()=>{
-          const id = b.dataset.id;
-          const lesson = LESSONS.find(x=>x.id===id);
-          if(!lesson) return;
-          // mark done, award xp/coins
-          if(!state.lessons[id]){
-            state.lessons[id] = {completedAt:Date.now()};
-            giveXP(lesson.xp);
-            giveCoins(lesson.coins);
-            addAchievement(`Completed: ${lesson.title}`, 'Complete a lesson');
-            checkQuests();
-            saveState();
-            renderLessons();
-          }
-        });
-      });
-    }
-
-    // Expenses / Simulator
-    function addExpense(){
-      const name = document.getElementById('expense-name').value.trim();
-      const amt = Math.max(0, Math.round(+document.getElementById('expense-amt').value||0));
-      if(!name || !amt) return;
-      state.expenses = state.expenses || [];
-      state.expenses.push({name, amt});
-      document.getElementById('expense-name').value=''; document.getElementById('expense-amt').value='';
-      renderExpenses();
-      saveState();
-    }
-    function renderExpenses(){
-      const el = document.getElementById('expenses');
-      el.innerHTML = '';
-      (state.expenses||[]).forEach((e,i)=>{
-        const row = document.createElement('div');
-        row.className='row';
-        row.style.marginBottom='8px';
-        row.innerHTML = `<div style="flex:1" class="muted">${e.name}</div><div style="width:80px;text-align:right" class="muted">$${e.amt}</div><button class="ghost small" data-i="${i}">Remove</button>`;
-        el.appendChild(row);
-      });
-      el.querySelectorAll('button').forEach(b=>b.addEventListener('click', ()=>{
-        const i = +b.dataset.i;
-        state.expenses.splice(i,1);
+      // Leveling
+      function xpToNext(level){ return 100 + (level-1)*50; }
+      function giveXP(amount){
+        state.xp += amount;
+        while(state.xp >= xpToNext(state.level)){
+          state.xp -= xpToNext(state.level);
+          state.level++;
+        }
         saveState();
-        renderExpenses();
-      }));
-    }
-    function calculateBudget(){
-      const income = Math.max(0, +document.getElementById('income').value||0);
-      const months = Math.max(1, +document.getElementById('months').value||1);
-      const totalExpenses = (state.expenses||[]).reduce((s,x)=>s+x.amt,0);
-      const monthlySavings = Math.max(0, income - totalExpenses);
-      const savingsRate = income ? Math.round((monthlySavings/income)*100) : 0;
-      simResult.textContent = `You can save $${monthlySavings} /month (${savingsRate}% of income). Over ${months} months → $${monthlySavings*months}`;
-      // reward when savings rate >= 10% as a simple achievement
-      state.flags = state.flags||{};
-      if(savingsRate >= 10){ state.flags.saved10 = true; addAchievement('Smart Saver','Kept >=10% savings in simulator'); giveXP(15); giveCoins(10); }
-      saveState();
-    }
+      }
+      function giveCoins(n){
+        state.coins += n;
+        saveState();
+      }
 
-    // Quests & mini-games
-    function renderQuests(){
-      questList.innerHTML='';
-      QUESTS.forEach(q=>{
-        const done = q.check(state);
-        const li = document.createElement('li');
-        li.innerHTML = `<div><strong>${q.title}</strong><div class="muted" style="font-size:13px">Reward: ${q.reward.xp} XP & ${q.reward.coins} coins</div></div>
-          <div>${done?'<span class="muted">Completed</span>':`<button class="btn small" data-q="${q.id}">Claim</button>`}</div>`;
-        questList.appendChild(li);
-      });
-      questList.querySelectorAll('button').forEach(b=>{
-        b.addEventListener('click', ()=>{
-          const id = b.dataset.q;
-          const q = QUESTS.find(x=>x.id===id);
-          if(!q) return;
-          // if check passes, award
-          if(q.check(state) || id==='q3'){ giveXP(q.reward.xp); giveCoins(q.reward.coins); state.quests[id]=true; addAchievement(`Quest: ${q.title}`, 'Complete quests to earn rewards'); saveState(); }
+      // Init & wiring
+      function init(){
+        // theme init
+        const saved = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        applyTheme(saved);
+        if(themeToggle) themeToggle.addEventListener('click', toggleTheme);
+
+        // tabs
+        tabs.forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            tabs.forEach(b=>b.classList.remove('active'));
+            btn.classList.add('active');
+            Object.keys(sections).forEach(k=>{
+              if(sections[k]) sections[k].style.display='none';
+            });
+            const tab = btn.dataset.tab;
+            if(sections[tab]) sections[tab].style.display = 'block';
+          });
         });
-      });
-    }
 
-    function spinReward(){
-      const roll = Math.floor(Math.random()*100)+1;
-      let coins=0, xp=0;
-      if(roll>95){ coins=100; xp=60; spinResult.textContent='Jackpot!'; }
-      else if(roll>80){ coins=30; xp=20; spinResult.textContent='Nice!'; }
-      else if(roll>40){ coins=10; xp=8; spinResult.textContent='Good'; }
-      else { coins=3; xp=2; spinResult.textContent='Small win'; }
-      giveCoins(coins); giveXP(xp);
-      state.quests['q3'] = true;
-      saveState();
-      setTimeout(()=>spinResult.textContent='',2000);
-    }
+        // wiring - guard elements exist
+        const addExp = document.getElementById('add-exp');
+        if(addExp) addExp.addEventListener('click', addExpense);
+        const calcBtn = document.getElementById('calc');
+        if(calcBtn) calcBtn.addEventListener('click', calculateBudget);
+        const save50 = document.getElementById('save-50');
+        if(save50) save50.addEventListener('click', ()=>{ const inc = +document.getElementById('income').value || 0; document.getElementById('expense-amt').value = Math.round(inc*0.5); });
+        const spin = document.getElementById('spin');
+        if(spin) spin.addEventListener('click', spinReward);
+        const reset = document.getElementById('reset');
+        if(reset) reset.addEventListener('click', resetProgress);
 
-    // Achievements
-    function addAchievement(title, desc){
-      state.achievements = state.achievements || {};
-      if(state.achievements[title]) return;
-      state.achievements[title] = {title,desc,date:Date.now()};
-      saveState();
-    }
-    function renderAchievements(){
-      achList.innerHTML='';
-      const ach = Object.values(state.achievements||{});
-      if(ach.length===0){ achList.innerHTML='<li class="muted">No achievements yet</li>'; return; }
-      ach.forEach(a=>{
-        const li = document.createElement('li');
-        li.style.marginBottom='8px';
-        li.innerHTML = `<strong>${a.title}</strong> <div class="muted" style="font-size:13px">${a.desc}</div>`;
-        achList.appendChild(li);
-      });
-    }
+        renderLessons();
+        renderQuests();
+        render();
+        renderExpenses();
+      }
 
-    
+      // Render
+      function render(){
+        if(coinsEl) coinsEl.textContent = state.coins;
+        if(xpEl) xpEl.textContent = state.xp;
+        if(levelEl) levelEl.textContent = state.level;
+        if(xpbar){
+          const pct = Math.min(100, Math.round((state.xp / xpToNext(state.level))*100));
+          xpbar.style.width = pct + '%';
+        }
+        if(profileCoins) profileCoins.textContent = state.coins;
+        if(profileXp) profileXp.textContent = `${state.xp} (Lvl ${state.level})`;
+        renderAchievements();
+        renderQuests();
+      }
 
-    function checkQuests(){ renderQuests(); }
+      // Lessons
+      function renderLessons(){
+        if(!lessonsEl) return;
+        lessonsEl.innerHTML = '';
+        LESSONS.forEach(l=>{
+          const done = !!(state.lessons && state.lessons[l.id]);
+          const div = document.createElement('div');
+          div.className = 'lesson';
+          div.innerHTML = `
+            <div>
+              <h3>${l.title}</h3>
+              <div class="muted">${l.desc}</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+              <div class="muted" style="font-size:13px">+${l.xp} XP</div>
+              <button class="${done?'ghost':'btn'} small" data-id="${l.id}" ${done?'disabled':''}>${done?'Completed':'Start'}</button>
+            </div>
+          `;
+          lessonsEl.appendChild(div);
+        });
 
-    function resetProgress(){
-      if(!confirm('Reset local progress?')) return;
-      localStorage.removeItem(STORAGE_KEY);
-      state = loadState();
-      renderLessons();
-      render();
-      renderExpenses();
-    }
+        lessonsEl.querySelectorAll('button[data-id]').forEach(b=>{
+          b.addEventListener('click', ()=>{
+            const id = b.dataset.id;
+            const lesson = LESSONS.find(x=>x.id===id);
+            if(!lesson) return;
+            if(!state.lessons[id]){
+              state.lessons[id] = {completedAt:Date.now()};
+              giveXP(lesson.xp);
+              giveCoins(lesson.coins);
+              addAchievement(`Completed: ${lesson.title}`, 'Complete a lesson');
+              checkQuests();
+              saveState();
+              renderLessons();
+            }
+          });
+        });
+      }
 
-    // initial expenses render
-    renderExpenses();
-    init();
-    render();
+      // Expenses / Simulator
+      function addExpense(){
+        const nameEl = document.getElementById('expense-name');
+        const amtEl = document.getElementById('expense-amt');
+        if(!nameEl || !amtEl) return;
+        const name = nameEl.value.trim();
+        const amt = Math.max(0, Math.round(+amtEl.value||0));
+        if(!name || !amt) return;
+        state.expenses = state.expenses || [];
+        state.expenses.push({name, amt});
+        nameEl.value=''; amtEl.value='';
+        renderExpenses();
+        saveState();
+      }
+      function renderExpenses(){
+        const el = document.getElementById('expenses');
+        if(!el) return;
+        el.innerHTML = '';
+        (state.expenses||[]).forEach((e,i)=>{
+          const row = document.createElement('div');
+          row.className='row';
+          row.style.marginBottom='8px';
+          row.innerHTML = `<div style="flex:1" class="muted">${e.name}</div>
+                           <div style="width:80px;text-align:right" class="muted">$${e.amt}</div>
+                           <button class="ghost small remove-exp" data-i="${i}">Remove</button>`;
+          el.appendChild(row);
+        });
+        el.querySelectorAll('.remove-exp').forEach(btn=>{
+          btn.addEventListener('click', ()=>{
+            const i = +btn.dataset.i;
+            if(Number.isInteger(i)) {
+              state.expenses.splice(i,1);
+              saveState();
+              renderExpenses();
+            }
+          });
+        });
+      }
+      function calculateBudget(){
+        const income = Math.max(0, +document.getElementById('income').value||0);
+        const months = Math.max(1, +document.getElementById('months').value||1);
+        const totalExpenses = (state.expenses||[]).reduce((s,x)=>s+x.amt,0);
+        const monthlySavings = Math.max(0, income - totalExpenses);
+        const savingsRate = income ? Math.round((monthlySavings/income)*100) : 0;
+        if(simResult) simResult.textContent = `You can save $${monthlySavings} /month (${savingsRate}% of income). Over ${months} months → $${monthlySavings*months}`;
+        state.flags = state.flags||{};
+        if(savingsRate >= 10 && !state.flags.saved10){
+          state.flags.saved10 = true;
+          addAchievement('Smart Saver','Kept >=10% savings in simulator');
+          giveXP(15); giveCoins(10);
+        }
+        saveState();
+      }
+
+      // Quests & mini-games
+      function renderQuests(){
+        if(!questList) return;
+        questList.innerHTML='';
+        QUESTS.forEach(q=>{
+          const done = !!(state.quests && state.quests[q.id]) || !!q.check(state);
+          const li = document.createElement('li');
+          li.innerHTML = `<div><strong>${q.title}</strong><div class="muted" style="font-size:13px">Reward: ${q.reward.xp} XP & ${q.reward.coins} coins</div></div>
+            <div>${done?'<span class="muted">Completed</span>':`<button class="btn small quest-claim" data-q="${q.id}">Claim</button>`}</div>`;
+          questList.appendChild(li);
+        });
+        questList.querySelectorAll('.quest-claim').forEach(b=>{
+          b.addEventListener('click', ()=>{
+            const id = b.dataset.q;
+            const q = QUESTS.find(x=>x.id===id);
+            if(!q) return;
+            if(q.check(state) || id==='q3'){
+              giveXP(q.reward.xp); giveCoins(q.reward.coins);
+              state.quests = state.quests || {};
+              state.quests[id] = true;
+              addAchievement(`Quest: ${q.title}`, 'Complete quests to earn rewards');
+              saveState();
+            } else {
+              alert('Quest not yet completed. Try the required action first.');
+            }
+          });
+        });
+      }
+
+      function spinReward(){
+        const roll = Math.floor(Math.random()*100)+1;
+        let coins=0, xp=0;
+        if(roll>95){ coins=100; xp=60; if(spinResult) spinResult.textContent='Jackpot!'; }
+        else if(roll>80){ coins=30; xp=20; if(spinResult) spinResult.textContent='Nice!'; }
+        else if(roll>40){ coins=10; xp=8; if(spinResult) spinResult.textContent='Good'; }
+        else { coins=3; xp=2; if(spinResult) spinResult.textContent='Small win'; }
+        giveCoins(coins); giveXP(xp);
+        state.quests = state.quests || {};
+        state.quests['q3'] = true;
+        saveState();
+        setTimeout(()=>{ if(spinResult) spinResult.textContent=''; },2000);
+      }
+
+      // Achievements
+      function addAchievement(title, desc){
+        state.achievements = state.achievements || {};
+        if(state.achievements[title]) return;
+        state.achievements[title] = {title,desc,date:Date.now()};
+        saveState();
+      }
+      function renderAchievements(){
+        if(!achList) return;
+        achList.innerHTML='';
+        const ach = Object.values(state.achievements||{});
+        if(ach.length===0){ achList.innerHTML='<li class="muted">No achievements yet</li>'; return; }
+        ach.forEach(a=>{
+          const li = document.createElement('li');
+          li.style.marginBottom='8px';
+          li.innerHTML = `<strong>${a.title}</strong> <div class="muted" style="font-size:13px">${a.desc}</div>`;
+          achList.appendChild(li);
+        });
+      }
+
+      function checkQuests(){ renderQuests(); }
+
+      function resetProgress(){
+        if(!confirm('Reset local progress?')) return;
+        localStorage.removeItem(STORAGE_KEY);
+        localStorage.removeItem(THEME_KEY);
+        state = loadState();
+        const saved = localStorage.getItem(THEME_KEY) || (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        applyTheme(saved);
+        renderLessons();
+        render();
+        renderExpenses();
+      }
+
+      // start
+      init();
+    })();
   </script>
 </body>
 </html>
