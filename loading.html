@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading | Finance Tutor</title>
+<style>
+  body {
+    margin: 0;
+    height: 100vh;
+    background: radial-gradient(circle at center, #000814 0%, #001d3d 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+    color: #00ffff;
+  }
+
+  /* Glowing energy ring */
+  .energy-ring {
+    position: relative;
+    width: 160px;
+    height: 160px;
+    border-radius: 50%;
+    border: 4px solid rgba(0, 255, 255, 0.2);
+    animation: rotateRing 2.5s linear infinite;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+  }
+
+  .energy-ring::before, .energy-ring::after {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    border-top-color: cyan;
+    border-left-color: cyan;
+    animation: spin 1.5s linear infinite;
+  }
+
+  .energy-ring::after {
+    animation-duration: 3s;
+    border-top-color: transparent;
+    border-right-color: cyan;
+  }
+
+  /* Rotating particle sparks */
+  .particle {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: cyan;
+    border-radius: 50%;
+    box-shadow: 0 0 10px cyan;
+    animation: fly 2s linear infinite;
+  }
+
+  /* Text area */
+  .loading-text {
+    position: absolute;
+    top: 65%;
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 0 0 10px cyan;
+    animation: blink 1.2s infinite alternate;
+  }
+
+  @keyframes rotateRing {
+    0% { transform: rotate(0deg) scale(1); }
+    100% { transform: rotate(360deg) scale(1); }
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  @keyframes fly {
+    0% { transform: rotate(0deg) translateY(-80px) rotate(0deg); opacity: 1; }
+    100% { transform: rotate(360deg) translateY(-80px) rotate(-360deg); opacity: 0; }
+  }
+
+  @keyframes blink {
+    0% { opacity: 1; }
+    100% { opacity: 0.3; }
+  }
+
+  /* Fade out effect when page loads */
+  #loader.fade-out {
+    opacity: 0;
+    transition: opacity 1s ease;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+  <div id="loader">
+    <div class="energy-ring" id="ring"></div>
+    <div class="loading-text">Charging your financial power ⚡</div>
+  </div>
+
+  <script>
+    // Create rotating particles
+    const ring = document.getElementById('ring');
+    for (let i = 0; i < 20; i++) {
+      const p = document.createElement('div');
+      p.classList.add('particle');
+      const angle = Math.random() * 360;
+      const delay = Math.random() * 2;
+      p.style.transform = `rotate(${angle}deg) translateY(-80px)`;
+      p.style.animationDelay = `${delay}s`;
+      ring.appendChild(p);
+    }
+
+    // Simulate loading completion (3 seconds)
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        document.getElementById('loader').classList.add('fade-out');
+        setTimeout(() => {
+          window.location.href = "index.html"; // redirect to main site
+        }, 1000);
+      }, 3000);
+    });
+  </script>
+</body>
+</html>
